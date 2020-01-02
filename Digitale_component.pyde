@@ -1,46 +1,59 @@
-app_width = 800
-app_height = 600
-
-button_att_ex = app_width*0.10
-button_att_wa = app_width*0.16
-button_att_ta = app_width*0.22
-
-button_def_ex = app_width*0.78
-button_def_wa = app_width*0.84
-button_def_ta = app_width*0.90
-
-button_size = app_width/18
-button_minus_y = app_height*0.85
-button_plus_y = app_height*0.70
-counter_y = app_height*0.785
-
-defending_explorer_counter = 0
-defending_warrior_counter = 0
-defending_tank_counter = 0
-
-attacking_explorer_counter = 0
-attacking_warrior_counter = 0
-attacking_tank_counter = 0
+import game_combat
 
 def setup():
-    size(app_width, app_height)
+    global screen_1, screen_2, screen_3, screen_4, screen_bg, env, battlebutton, battlebutton_pressed, current_button_img
+    screen_1 = loadImage("Screen-1-1000x600.jpg")
+    screen_2 = loadImage("Screen-2-1000x600.jpg")
+    screen_3 = loadImage("Screen-3-1000x600.jpg")
+    screen_4 = loadImage("Screen-4-1000x600.jpg")
+    screen_bg = loadImage("Bg-Screen.jpg")
+    env = 0
+    
+    battlebutton = loadImage('battle-button.png')
+    battlebutton_pressed = loadImage('battle-button-pressed.png')
+    current_button_img = battlebutton
+    
+    size(1000, 600)
 
-def draw():
-    background(240) 
-    draw_buttons()
 
+def draw():    
+    global env
+    background(screen_bg)
+    print(env)
+        
+    if env == 0:
+        background(screen_1)
+        if 339 < mouseX < 517 and 239 < mouseY < 324:
+            background(screen_2)
+        elif 533 < mouseX < 712 and 342 < mouseY < 431:
+            background(screen_3)
+        elif 729 < mouseX < 907 and 450 < mouseY < 563:
+            background(screen_4)
+            
+        circle(width*0.05, height*0.075, 50)
+
+    elif env == 1:
+        game_combat.draw(battlebutton, battlebutton_pressed, current_button_img)
+    elif env == 2:
+        None
+        
 def mousePressed():
-    attackerButtons()
-    defenderButtons()
-
-# def isMouseWithinObject(x, y):
-#     global button_plus_y, button_size
-#     if x < mouseX < x + button_size and y < mouseY < y + button_size:
-#         return True
-#     else:
-#         return False
-
-# Detects if mouse is over the buttons
+    global env
+    ## Temporary back button
+    if overCircle(width*0.05, height*0.075, 50):
+        env = 0
+    
+    game_combat.mousePressed(battlebutton, battlebutton_pressed, current_button_img);
+    
+    if mouseButton == LEFT and env == 0:
+        if 339 < mouseX < 517 and 239 < mouseY < 324:
+            env = 1
+            background(screen_bg)
+        elif 533 < mouseX < 712 and 342 < mouseY < 431:
+            background(screen_bg)
+        elif 729 < mouseX < 907 and 450 < mouseY < 563:
+            exit()
+    
 def overCircle(x, y, diameter):
     disX = x - mouseX
     disY = y - mouseY
@@ -48,124 +61,3 @@ def overCircle(x, y, diameter):
         return True
     else:
         return False
-    
-# Controls the buttons for the attacking player
-def attackerButtons():
-    global attacking_explorer_counter, attacking_warrior_counter, attacking_tank_counter, button_att_ex, button_att_wa, button_att_ta
-    if overCircle(button_att_ex, button_plus_y, button_size) and attacking_explorer_counter < 5:
-        attacking_explorer_counter += 1
-    if overCircle(button_att_wa, button_plus_y, button_size) and attacking_warrior_counter < 5:
-        attacking_warrior_counter += 1
-    if overCircle(button_att_ta, button_plus_y, button_size) and attacking_tank_counter < 5:
-        attacking_tank_counter += 1
-        
-    if overCircle(button_att_ex, button_minus_y, button_size) and attacking_explorer_counter > 0:
-        attacking_explorer_counter -= 1
-    if overCircle(button_att_wa, button_minus_y, button_size) and attacking_warrior_counter > 0:
-        attacking_warrior_counter -= 1
-    if overCircle(button_att_ta, button_minus_y, button_size) and attacking_tank_counter > 0:
-        attacking_tank_counter -= 1
-
-# Controls the buttons for the defending player    
-def defenderButtons():
-    global defending_explorer_counter, defending_warrior_counter, defending_tank_counter
-    if overCircle(width*0.78, button_plus_y, button_size) and defending_explorer_counter < 5:
-        defending_explorer_counter += 1
-    if overCircle(width*0.84, button_plus_y, button_size) and defending_warrior_counter < 5:
-        defending_warrior_counter += 1
-    if overCircle(width*0.90, button_plus_y, button_size) and defending_tank_counter < 5:
-        defending_tank_counter += 1
-        
-    if overCircle(width*0.78, button_minus_y, button_size) and defending_explorer_counter > 0:
-        defending_explorer_counter -= 1
-    if overCircle(width*0.84, button_minus_y, button_size) and defending_warrior_counter > 0:
-        defending_warrior_counter -= 1
-    if overCircle(width*0.90, button_minus_y, button_size) and defending_tank_counter > 0:
-        defending_tank_counter -= 1
- 
-# Gets the rolls for explorer ships
-def get_explorer_roll(x):
-    explorer_rolls = []
-    while x > 0:
-        explorer_roll += random(1,4)
-        x -= 1
-    return explorer_roll
-   
-# Gets the rolls for warrior ships
-def get_warrior_rolls(x):
-    warrior_rolls = []
-    while x > 0:
-        warrior_roll += random(1,6)
-        x -= 1
-    return warrior_roll
-
-# Gets the rolls for tank ships
-def get_tank_rolls(x):
-    tank_rolls = []
-    while x > 0:
-        tank_rolls += random(1,8)
-        x -= 1
-    return tank_rolls
-
-# Draws the layout for the buttons and counters
-def draw_buttons():
-    global button_att_ex, button_att_wa, button_att_ta, button_def_ex, button_def_wa, button_def_ta
-    #LEFT SIDE
-    #PLUS
-    fill(255)
-    circle(button_att_ex, button_plus_y, button_size)
-    circle(button_att_wa, button_plus_y, button_size)
-    circle(button_att_ta, button_plus_y, button_size)
-    
-    #MINUS
-    fill(255)
-    circle(button_att_ex, button_minus_y, button_size)
-    circle(button_att_wa, button_minus_y, button_size)
-    circle(button_att_ta, button_minus_y, button_size)
-    
-    #TEXT
-    fill(0)
-    textSize(25)
-    textAlign(CENTER)
-    #COUNTERS
-    text(attacking_explorer_counter, width*0.10, counter_y)
-    text(attacking_warrior_counter, width*0.16, counter_y)
-    text(attacking_tank_counter, width*0.22, counter_y)
-    #SYMBOLS
-    textAlign(CENTER)
-    text('+', button_att_ex, button_plus_y+5)
-    text('+', button_att_wa, button_plus_y+5)
-    text('+', button_att_ta, button_plus_y+5)
-    text('-', button_att_ex, button_minus_y+5)
-    text('-', button_att_wa, button_minus_y+5)
-    text('-', button_att_ta, button_minus_y+5)
-    
-    #RIGHT SIDE
-    #PLUS
-    fill(255)
-    circle(button_def_ex, button_plus_y, button_size)
-    circle(button_def_wa, button_plus_y, button_size)
-    circle(button_def_ta, button_plus_y, button_size)
-    
-    #MINUS
-    fill(255)
-    circle(button_def_ex, button_minus_y, button_size)
-    circle(button_def_wa, button_minus_y, button_size)
-    circle(button_def_ta, button_minus_y, button_size)
-
-    #TEXT
-    fill(0)
-    textSize(25)
-    textAlign(CENTER)
-    #COUNTERS
-    text(defending_explorer_counter, button_def_ex, counter_y)
-    text(defending_warrior_counter, button_def_wa, counter_y)
-    text(defending_tank_counter, button_def_ta, counter_y)
-    #SYMBOLS
-    textAlign(CENTER)
-    text('+', button_def_ex, button_plus_y+5)
-    text('+', button_def_wa, button_plus_y+5)
-    text('+', button_def_ta, button_plus_y+5)
-    text('-', button_def_ex, button_minus_y+5)
-    text('-', button_def_wa, button_minus_y+5)
-    text('-', button_def_ta, button_minus_y+5)
