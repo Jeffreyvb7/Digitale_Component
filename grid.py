@@ -44,8 +44,8 @@ random_event_with_coords = [
                             'Door een rondtrekkende nomaden vloot van het Imperium zijn de volgende coordinaten niet beschikbaar:',
                             'Door een grote nevelvlekken zijn  de volgende coordinaten niet beschikbaar',
                             'Wegens een onverwachte meteoren regen zijn alle troepen verwoest in de volgende coordinaten',
-                            'Jullie horen door intergalactische communicatie systemen wordt er omgeroepen dat er op de volgende coordinaten een asteroide is gevonden vol met grondstoffen',
-                            'Jullie horen door intergalactische communicatie systemen wordt er omgeroepen dat er op de volgende coordinaten een interstellaire wolk is gevonden vol met brandstof',
+                            'Jullie horen door de intergalactische communicatie systemen dat er op de volgende coordinaten een asteroide is gevonden vol met grondstoffen (+1 grondstof bij het betreden van een vakje)',
+                            'Jullie horen door de intergalactische communicatie systemen dat er op de volgende coordinaten een interstellaire wolk is gevonden vol met brandstof (+1 brandstof bij het betreden van een vakje)',
                             ]
 
 c1 = color(41,31,191)
@@ -148,7 +148,42 @@ def draw_text(round_counter):
     textSize(18)
     fill(255)
     text("\n".join(textwrap.wrap(current_event,40)), 650, 230)
+    
+    text('A', 85, 45)
+    text('B', 85, 80)
+    text('C', 85, 115)
+    text('D', 85, 150)
+    text('E', 85, 182)
+    text('F', 85, 217)
+    text('G', 85, 254)
+    text('H', 85, 290)
+    text('I', 85, 325)
+    text('J', 85, 360)
+    text('K', 85, 395)
+    text('L', 85, 430)
+    text('M', 85, 465)
+    text('N', 85, 500)
+    text('O', 85, 535)
+    
+    text('1', 111, 570)
+    text('2', 146, 570)
+    text('3', 181, 570)
+    text('4', 216, 570)
+    text('5', 251, 570)
+    text('6', 286, 570)
+    text('7', 321, 570)
+    text('8', 356, 570)
+    text('9', 391, 570)
+    text('10', 421, 570)
+    text('11', 458, 570)
+    text('12', 492, 570)
+    text('13', 525, 570)
+    text('14', 562, 570)
+    text('15', 596, 570)
+    
     fill(255)
     circle(width*0.05, height*0.075, 50)
+
+
 
     
